@@ -1,8 +1,11 @@
 import React, { Component } from "react";
 import { PropTypes } from "prop-types";
+import { connect } from "react-redux";
+import { postTodo } from "../actions/todoActions";
 
 
 class AddTodo extends Component {
+
   state = {
     title: ""
   };
@@ -11,11 +14,18 @@ class AddTodo extends Component {
     this.setState({ [e.target.name]: e.target.value });
   };
 
-  onSubmit = e => {
+
+  onSubmit = (e) => {
     e.preventDefault();
-    this.props.addTodo(this.state.title);
-    this.setState({title: ""});
-  };
+    const newTodo = {
+      title: this.state.title,
+      completed: false
+    };
+    this.props.postTodo(newTodo);
+    this.setState({
+      title: ""
+    })
+  }
 
   render() {
     return (
@@ -43,7 +53,7 @@ class AddTodo extends Component {
 }
 
 AddTodo.propTypes = {
-  addTodo: PropTypes.func.isRequired
+  postTodo: PropTypes.func.isRequired
 }
 
-export default AddTodo;
+export default connect(null, {postTodo})(AddTodo);
